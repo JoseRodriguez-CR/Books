@@ -56,15 +56,16 @@ public class BooksController {
     public String edit(@PathVariable("id") Long id, Model model) {
         Book book = bookService.findBook(id);
         model.addAttribute("book", book);
-        return "/books/edit.jsp";
+        return "edit.jsp";
     }
     
     @RequestMapping(value="/books/{id}", method=RequestMethod.PUT)
     public String update(@Valid @ModelAttribute("book") Book book, BindingResult result) {
         if (result.hasErrors()) {
-            return "/books/edit.jsp";
+            return "edit.jsp";
         } else {
-            bookService.updateBook(book);
+        	System.out.println(book.getId());
+            bookService.updateBook(book.getId(), book.getTitle(), book.getDescription(), book.getLanguage(), book.getNumberOfPages() );
             return "redirect:/books";
         }
     }
